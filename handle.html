@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Get Order Code</title>
+    <!-- 新 Bootstrap 核心 CSS 文件 -->
+    <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.2/css/bootstrap.min.css">
+
+    <!-- 可选的Bootstrap主题文件（一般不用引入） -->
+    <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+
+    <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+    <script src="http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>
+
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <script src="http://cdn.bootcss.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+
+    <script src="http://cdn.bootcss.com/angular.js/1.4.0-beta.4/angular-1.4.0-beta.5/angular.js"></script>
+
+
+  </head>
+  <body ng-app="myApp">
+    <div class="container" ng-controller="MyController">
+      <table class="table table-bordered">
+        <!-- On cells (`td` or `th`) -->
+        <tr>
+          <td class="">phone</td>
+          <td class="">address</td>
+          <td class="">monye</td>
+          <td class="">statue</td>
+          <td class="">agree</td>
+          <td class="">Refuse</td>
+        </tr>
+
+        <tr ng-repeat="record in records">
+          <td class="active">{{ record.phone }}</td>
+          <td class="warning">{{ record.address }}</td>
+          <td class="info">{{ record.money }}</td>
+          <td class="statue">{{ record.statue }}</td>
+          <td class="success">
+            <a class="label label-success" ng-click="agree(record.id);">agree</a>
+          </td>
+          <td class="danger">
+            <a class="label label-danger" ng-click="refuse(record.id);">refuse</a>
+          </td>
+        </tr>
+      </table>
+    </div>
+
+  </body>
+</html>
+
+    <script>
+
+      var app = angular.module('myApp', []); 
+      app.controller('MyController', ['$scope','$http', function($scope,$http) { 
+
+        $http.get('./get.php?type=1')
+        .success(function(data, status) { 
+          $scope.records = data; 
+        }).error(function(data, status) { 
+          alert("error!"); 
+        }); 
+
+        $scope.agree = function(id) { 
+          $http.get('./alt.php?statue=1&id='+id)
+          .success(function(data, status) { 
+               window.location.reload();
+          }).error(function(data, status) { 
+            alert("error!"); 
+          }); 
+        };
+        $scope.refuse = function(id) { 
+          $http.get('./alt.php?statue=2&id='+id)
+          .success(function(data, status) { 
+              window.location.reload();
+          }).error(function(data, status) { 
+            alert("error!"); 
+          }); 
+        };
+      }]); 
+
+</script>

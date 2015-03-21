@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Get Order Code</title>
+    <!-- 新 Bootstrap 核心 CSS 文件 -->
+    <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.2/css/bootstrap.min.css">
+
+    <!-- 可选的Bootstrap主题文件（一般不用引入） -->
+    <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+
+    <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+    <script src="http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>
+
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <script src="http://cdn.bootcss.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+
+  </head>
+  <body>
+    <div class="container">
+      <div class="jumbotron center-block">
+        <h3>Make an appointment</h1>
+      </div>
+
+        <div class="form-group form-group-lg">
+          <label for="phone">Phone number</label>
+          <input type="text" class="form-control" id="phone" placeholder="enter your phone number">
+        </div>
+        <div class="form-group form-group-lg">
+          <label for="address">Band address</label>
+          <input type="text" class="form-control" id="address" placeholder="Enter bank address">
+        </div>
+        <div class="form-group form-group-lg">
+          <label for="money">Money number</label>
+          <input type="text" class="form-control" id="money" placeholder="Enter money number">
+        </div>
+        <button type="submit" class="btn-block btn btn-info btn-lg" onclick="submit();">Submit</button>
+
+
+    </div>
+
+  </body>
+</html>
+
+<script>
+
+function submit(){
+  if($("#phone").val()==""){
+    alert("phone nuber must input");
+    return false;
+  }
+  if($("#address").val()==""){
+    alert("bank address must input");
+    return false;
+  }
+  if($("#money").val()==""){
+    alert("money number must input");
+    return false;
+  }
+
+  var msg = {};
+  msg["phone"] = $("#phone").val();
+  msg["address"] = $("#address").val();
+  msg["money"] = $("#money").val();
+
+  $.post("./add.php",JSON.stringify(msg),
+  function(data,status){
+     // alert("Data: " + data + "\nStatus: " + status);
+    if(data != "1" ){
+      alert("fail to add request!");
+    }else{
+      alert("success to add request!");
+      // window.location.href="./success.html";
+    }
+  });
+}
+
+</script>
