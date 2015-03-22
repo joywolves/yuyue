@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Get Order Code</title>
+    <!-- 新 Bootstrap 核心 CSS 文件 -->
+    <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.2/css/bootstrap.min.css">
+
+    <!-- 可选的Bootstrap主题文件（一般不用引入） -->
+    <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+
+    <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+    <script src="http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>
+
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <script src="http://cdn.bootcss.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+
+    <script src="http://cdn.bootcss.com/angular.js/1.4.0-beta.4/angular-1.4.0-beta.5/angular.js"></script>
+
+
+  </head>
+  <body ng-app="myApp">
+    <div class="container table-responsive" ng-controller="MyController">
+
+      <div class="panel panel-info">
+        
+         <div class="panel-heading">worker handle list</div>
+
+      <table class="table table-bordered">
+        <!-- On cells (`td` or `th`) -->
+        <tr>
+          <th class="">name</th>
+          <th class="">phone</th>
+          <th class="">address</th>
+          <th class="">monye</th>
+          <th class="">date</th>
+          <th class="">statue</th>
+          <th class="">cancel</th>
+        </tr>
+
+        <tr ng-repeat="record in records">
+          <td class="">{{ record.name }}</td>
+          <td class="">{{ record.phone }}</td>
+          <td class="">{{ record.address }}</td>
+          <td class="">{{ record.money }}</td>
+          <td class="">{{ record.date }}</td>
+          <td class="">{{ record.statue }}</td>
+          <td class=" text-center">
+            <a class="label label-danger" ng-click="cancel(record.id);">cancel</a>
+          </td>
+        </tr>
+      </table>
+      </div>
+      <button class="btn-block btn btn-info btn-lg" onclick="submit();">yuyue</button>
+    </div>
+
+  </body>
+</html>
+
+    <script>
+
+      var app = angular.module('myApp', []); 
+      app.controller('MyController', ['$scope','$http', function($scope,$http) { 
+        var user = getCookie("user");
+        $http.get('../models/billing/get.php?type=5&user='+user)
+        .success(function(data, status) { 
+          $scope.records = data; 
+        }).error(function(data, status) { 
+          alert("error!"); 
+        }); 
+
+        $scope.cancel = function(id) { 
+          $http.get('../models/billing/alt.php?statue=3&id='+id)
+          .success(function(data, status) { 
+              window.location.reload();
+          }).error(function(data, status) { 
+            alert("error!"); 
+          }); 
+        };
+      }]); 
+
+      function submit(){
+        window.location.href="yuyue.html";
+      }
+
+      //读取cookies
+      function getCookie(name)
+      {
+          var arr,reg=new RegExp("(^| )"+name+"=([^;]*)(;|$)");
+       
+          if(arr=document.cookie.match(reg))
+       
+              return (arr[2]);
+          else
+              return null;
+      }
+</script>

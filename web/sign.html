@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Get Order Code</title>
+    <!-- 新 Bootstrap 核心 CSS 文件 -->
+    <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.2/css/bootstrap.min.css">
+
+    <!-- 可选的Bootstrap主题文件（一般不用引入） -->
+    <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+
+    <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+    <script src="http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>
+
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <script src="http://cdn.bootcss.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+
+  </head>
+  <body>
+    <div class="container">
+
+        <div class="form-group form-group-lg">
+          <label for="account">Account 4-16 char</label>
+          <input type="text" class="form-control" id="account" placeholder="enter your account number">
+        </div>
+        <div class="form-group form-group-lg">
+          <label for="pass">Pass 6-20 char</label>
+          <input type="password" class="form-control" id="pass" placeholder="Enter bank pass">
+        </div>
+        <div class="form-group form-group-lg">
+          <label for="pass_rep">Pass repeat 6-20 char</label>
+          <input type="password" class="form-control" id="pass_rep" placeholder="Enter bank pass repeat">
+        </div>
+        <div class="form-group form-group-lg">
+          <label for="name">name</label>
+          <input type="text" class="form-control" id="name" placeholder="enter your name">
+        </div>
+        <div class="form-group form-group-lg">
+          <label for="type">User type</label>
+          <select id="type" class="form-control">
+            <option value="1">Customer</option>
+            <option value="2">Worker</option>
+          </select>
+        </div>
+        <button type="submit" class="btn-block btn btn-info btn-lg" onclick="submit();">Sign</button>
+        <div class="text-center">
+          <a class="text-success" href="./login.html" >already have account</a>
+        </div>
+    </div>
+
+  </body>
+</html>
+
+<script>
+
+function submit(){
+  if($("#account").val()==""){
+    alert("account must input");
+    return false;
+  }
+  if($("#pass").val()==""){
+    alert("pass must input");
+    return false;
+  }
+  if($("#pass").val()!=$("#pass_rep").val()){
+    alert("pass not same");
+    return false;
+  }
+  if($("#name").val()==""){
+    alert("name must input");
+    return false;
+  }
+  var msg = {};
+  msg["account"] = $("#account").val();
+  msg["pass"] = $("#pass").val();
+  msg["name"] = $("#name").val();
+  msg["type"] = $("#type").val();
+
+  $.get("../models/account/sign.php",msg,
+  function(data,status){
+    var ret;
+    var msg;
+    ret = JSON.parse(data);
+    switch (ret.code){
+    case -1:
+      msg="Argument not exist";
+      break;
+    case -2:
+      msg="Account must be 4-16 chars";
+      break;
+    case -3:
+      msg="Password must be 6-20 chars";
+      break;
+    case -4:
+      msg="Account already exist";
+      break;
+    case 1:
+      msg="Login success!!!";
+      break;
+    }
+    alert(msg);
+    if(ret.code == 1){
+      window.location.href="login.html";
+    }
+  });
+}
+
+</script>
